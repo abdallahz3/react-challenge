@@ -1,7 +1,7 @@
 module.exports = {
-  content: ["./src/**/*.{html,js}"],
+  content: ["index.html", "./src/**/*.{html,jsx}"],
   theme: {
     extend: {},
   },
-  plugins: [],
-}
+  plugins: [require("@tailwindcss/aspect-ratio")],
+};
