@@ -14,7 +14,7 @@ function App() {
         className={`absolute inset-0 z-10 ${showModal ? `` : `hidden`}`}
         id="modal"
       >
-        <div className="absolute inset-0 bg-gray-400 bg-opacity-50 blur-3xl"></div>
+        <div className="absolute inset-0 bg-gray-700 bg-opacity-70 blur-sm"></div>
       </div>
     </div>
   );

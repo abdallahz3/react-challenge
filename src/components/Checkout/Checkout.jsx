@@ -11,6 +11,7 @@ import NumberOfBagsForm from "./NumberOfBagsForm";
 import Modal, { showModalAtom } from "../Modal";
 import { placeBooking } from "../../apis/book";
 import Step from "./Step";
+import { useState } from "react";
 
 export default function Checkout() {
   const [step] = useAtom(stepAtom);
@@ -65,6 +66,9 @@ function Summary() {
   const [isNextDisabled] = useAtom(isNextDisabledAtom);
   const [, setShowModal] = useAtom(showModalAtom);
 
+  const [isRequesting, setIsRequesting] = useState(false);
+  const [isError, setIsError] = useState(false);
+
   return (
     <div className="border-t border-t-black flex justify-between items-center px-5 py-5">
       <div>
@@ -74,25 +78,39 @@ function Summary() {
         <p>${totalPrice}</p>
       </div>
       <button
-        className={`bg-blue-200 px-5 py-1 rounded ${
+        className={`${
           isNextDisabled
-            ? `text-white`
-            : `hover:bg-blue-400 hover:text-white cursor-pointer`
+            ? `px-5 py-1 rounded text-white`
+            : `px-5 py-1 rounded cursor-pointer`
+        } ${
+          isError
+            ? `bg-red-600 hover:bg-red-700 hover:text-black`
+            : `bg-blue-200 hover:bg-blue-400 hover:text-white`
         }`}
         disabled={isNextDisabled}
         onClick={() => {
           if (step == "payment-infromation") {
+            setIsRequesting(true);
+            setIsError(false);
             setShowModal(true);
-            placeBooking().then(() => {
-              setShowModal(false);
-              setStep(nextStep);
-            });
+            placeBooking()
+              .then(() => {
+                setIsRequesting(false);
+                setShowModal(false);
+
+                setStep(nextStep);
+              })
+              .catch((err) => {
+                setIsRequesting(false);
+                setIsError(true);
+                setShowModal(false);
+              });
             return;
           }
           setStep(nextStep);
         }}
       >
-        {nextLabel}
+        {isRequesting ? `...` : isError ? `retry` : nextLabel}
       </button>
     </div>
   );

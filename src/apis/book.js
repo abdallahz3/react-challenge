@@ -1,6 +1,11 @@
-
-
 export async function placeBooking() {
-  // make actual api call
-  return new Promise(resolve => setTimeout(resolve, 1000));
+  // TODO: make actual api call
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      // if (Math.random() * 100 > 50) {
+      //   reject(new Error("got here"));
+      // }
+      resolve();
+    }, 1000);
+  });
 }
